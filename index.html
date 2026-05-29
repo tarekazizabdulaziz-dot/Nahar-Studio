@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nahar Studio & Color Lab</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <!-- Google Fonts: Playfair Display + DM Sans -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy:    '#0f1c3f',
+            slate:   '#1e3a5f',
+            cyan:    '#00c8e0',
+            gold:    '#f0b429',
+            light:   '#f4f7fb',
+            muted:   '#6b7a99',
+          },
+          fontFamily: {
+            display: ['Playfair Display', 'serif'],
+            body:    ['DM Sans', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* ─── CSS Variables & Base ─────────────────────────────── */
+    :root {
+      --navy:  #0f1c3f;
+      --slate: #1e3a5f;
+      --cyan:  #00c8e0;
+      --gold:  #f0b429;
+      --light: #f4f7fb;
+      --white: #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--white);
+      color: var(--navy);
+      overflow-x: hidden;
+    }
+
+    /* ─── Scrollbar ─────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--light); }
+    ::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 3px; }
+
+    /* ─── Navbar ────────────────────────────────────────────── */
+    #navbar {
+      transition: all 0.35s ease;
+    }
+    #navbar.scrolled {
+      background: rgba(15,28,63,0.97) !important;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 4px 30px rgba(0,200,224,0.12);
+    }
+    .nav-link {
+      position: relative;
+      transition: color 0.2s;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -3px;
+      width: 0; height: 2px;
+      background: var(--cyan);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after { width: 100%; }
+
+    /* ─── Hero ──────────────────────────────────────────────── */
+    #hero {
+      background:
+        linear-gradient(135deg, rgba(15,28,63,0.93) 0%, rgba(30,58,95,0.85) 60%, rgba(0,200,224,0.15) 100%),
+        url('https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=1600&q=80') center/cover no-repeat;
+      min-height: 100vh;
+    }
+    .hero-badge {
+      background: rgba(0,200,224,0.15);
+      border: 1px solid rgba(0,200,224,0.4);
+      color: var(--cyan);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--cyan) 0%, #00a8c0 100%);
+      color: var(--navy);
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 6px 24px rgba(0,200,224,0.35);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 32px rgba(0,200,224,0.5);
+    }
+    .btn-outline {
+      border: 2px solid rgba(255,255,255,0.5);
+      color: white;
+      transition: all 0.25s;
+    }
+    .btn-outline:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
+      background: rgba(0,200,224,0.08);
+    }
+
+    /* floating stats */
+    .stat-card {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(10px);
+      transition: transform 0.25s, background 0.25s;
+    }
+    .stat-card:hover {
+      transform: translateY(-4px);
+      background: rgba(0,200,224,0.12);
+    }
+
+    /* ─── Section Headings ──────────────────────────────────── */
+    .section-badge {
+      display: inline-block;
+      background: rgba(0,200,224,0.1);
+      border: 1px solid rgba(0,200,224,0.3);
+      color: var(--cyan);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+    }
+    .underline-gold {
+      position: relative;
+      display: inline-block;
+    }
+    .underline-gold::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -6px;
+      width: 60px; height: 3px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      border-radius: 2px;
+    }
+
+    /* ─── Service Cards ─────────────────────────────────────── */
+    .service-category-card {
+      background: white;
+      border: 1px solid #e8edf5;
+      border-radius: 20px;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+      overflow: hidden;
+    }
+    .service-category-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 24px 60px rgba(15,28,63,0.12);
+      border-color: var(--cyan);
+    }
+    .service-icon-ring {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+    }
+    .service-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px dashed #e8edf5;
+      font-size: 0.9rem;
+      color: #3a4a6b;
+    }
+    .service-item:last-child { border-bottom: none; }
+    .service-item i { color: var(--cyan); width: 16px; }
+
+    /* ─── Calculator ────────────────────────────────────────── */
+    #calculator {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--slate) 100%);
+    }
+    .calc-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: none;
+    }
+    .calc-item:hover {
+      background: rgba(0,200,224,0.12);
+      border-color: rgba(0,200,224,0.4);
+    }
+    .calc-item.selected {
+      background: rgba(0,200,224,0.18);
+      border-color: var(--cyan);
+    }
+    .calc-item input[type="checkbox"] { accent-color: var(--cyan); width: 18px; height: 18px; }
+    .qty-btn {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: white;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-size: 1rem;
+      line-height: 1;
+    }
+    .qty-btn:hover { background: var(--cyan); color: var(--navy); }
+    .total-box {
+      background: linear-gradient(135deg, rgba(0,200,224,0.15), rgba(0,200,224,0.05));
+      border: 1.5px solid rgba(0,200,224,0.4);
+      border-radius: 16px;
+    }
+    .wa-btn {
+      background: #25D366;
+      color: white;
+      font-weight: 600;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .wa-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(37,211,102,0.4);
+    }
+
+    /* ─── Order Tracker ─────────────────────────────────────── */
+    .tracker-step {
+      display: flex; flex-direction: column; align-items: center;
+      flex: 1;
+      position: relative;
+    }
+    .tracker-step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 20px; left: 60%;
+      width: 80%; height: 2px;
+      background: #d1d9e6;
+      z-index: 0;
+    }
+    .tracker-step.done:not(:last-child)::after,
+    .tracker-step.active:not(:last-child)::after {
+      background: linear-gradient(90deg, var(--cyan), #d1d9e6);
+    }
+    .step-icon {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      position: relative; z-index: 1;
+      transition: all 0.3s;
+      border: 2px solid #d1d9e6;
+      background: white;
+      color: #9aa5be;
+    }
+    .tracker-step.done .step-icon {
+      background: var(--cyan);
+      border-color: var(--cyan);
+      color: white;
+      box-shadow: 0 0 0 4px rgba(0,200,224,0.2);
+    }
+    .tracker-step.active .step-icon {
+      background: var(--navy);
+      border-color: var(--cyan);
+      color: var(--cyan);
+      box-shadow: 0 0 0 4px rgba(0,200,224,0.15);
+      animation: pulse-step 1.8s infinite;
+    }
+    @keyframes pulse-step {
+      0%, 100% { box-shadow: 0 0 0 4px rgba(0,200,224,0.15); }
+      50%       { box-shadow: 0 0 0 8px rgba(0,200,224,0.05); }
+    }
+
+    /* ─── Gallery ───────────────────────────────────────────── */
+    .gallery-item {
+      overflow: hidden;
+      border-radius: 14px;
+      position: relative;
+    }
+    .gallery-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.45s ease;
+    }
+    .gallery-item:hover img { transform: scale(1.06); }
+    .gallery-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(15,28,63,0.8) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      display: flex; align-items: flex-end; padding: 16px;
+    }
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+
+    /* ─── Hours badge ───────────────────────────────────────── */
+    .hours-open  { background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.4); color: #10b981; }
+    .hours-closed{ background: rgba(239,68,68,0.12);  border: 1px solid rgba(239,68,68,0.35);  color: #ef4444; }
+
+    /* ─── Contact ───────────────────────────────────────────── */
+    .contact-card {
+      background: white;
+      border: 1px solid #e8edf5;
+      border-radius: 18px;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .contact-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(15,28,63,0.1);
+    }
+
+    /* ─── Map placeholder ───────────────────────────────────── */
+    .map-placeholder {
+      background: linear-gradient(135deg, #e8edf5, #d1d9e6);
+      border-radius: 18px;
+      height: 280px;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column;
+      gap: 12px;
+      color: var(--muted);
+      border: 2px dashed #c5cedf;
+      position: relative;
+      overflow: hidden;
+    }
+    .map-pin-anim {
+      animation: pin-bounce 1.5s ease-in-out infinite;
+    }
+    @keyframes pin-bounce {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-8px); }
+    }
+
+    /* ─── Footer ────────────────────────────────────────────── */
+    footer {
+      background: linear-gradient(180deg, var(--navy) 0%, #080f1e 100%);
+    }
+    .social-icon {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      transition: all 0.25s;
+      color: #9aa5be;
+      font-size: 1rem;
+    }
+    .social-icon:hover {
+      background: var(--cyan);
+      border-color: var(--cyan);
+      color: var(--navy);
+      transform: translateY(-2px);
+    }
+
+    /* ─── Reveal animation ──────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── Mobile menu ───────────────────────────────────────── */
+    #mobile-menu {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+    #mobile-menu.open { max-height: 400px; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     NAVBAR
+═══════════════════════════════════════════════════════════════ -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-transparent px-4 py-4 transition-all">
+  <div class="max-w-6xl mx-auto flex items-center justify-between">
+
+    <!-- Logo -->
+    <a href="#hero" class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background: linear-gradient(135deg,var(--cyan),#0095a8);">
+        <i class="fa-solid fa-camera text-white text-sm"></i>
+      </div>
+      <span class="font-display font-700 text-white text-lg leading-tight">
+        Nahar <span style="color:var(--cyan);">Studio</span><br>
+        <span class="text-xs font-body font-400 text-gray-300 tracking-widest">& COLOR LAB</span>
+      </span>
+    </a>
+
+    <!-- Desktop Nav -->
+    <ul class="hidden md:flex items-center gap-7 text-sm font-medium text-gray-300">
+      <li><a href="#services"   class="nav-link hover:text-white">Services</a></li>
+      <li><a href="#calculator" class="nav-link hover:text-white">Pricing</a></li>
+      <li><a href="#tracker"    class="nav-link hover:text-white">Order Status</a></li>
+      <li><a href="#gallery"    class="nav-link hover:text-white">Gallery</a></li>
+      <li><a href="#contact"    class="nav-link hover:text-white">Contact</a></li>
+    </ul>
+
+    <!-- CTA + Mobile Toggle -->
+    <div class="flex items-center gap-3">
+      <!-- Open/Closed badge -->
+      <span id="nav-status" class="hidden md:flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full hours-open">
+        <span class="w-2 h-2 rounded-full bg-current animate-pulse inline-block"></span>
+        <span id="nav-status-text">Open Now</span>
+      </span>
+      <button class="md:hidden text-gray-300 hover:text-white text-xl" id="menu-toggle" aria-label="Menu">
+        <i class="fa-solid fa-bars" id="menu-icon"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="md:hidden">
+    <ul class="flex flex-col gap-1 pt-3 pb-4 px-4 text-sm font-medium text-gray-300">
+      <li><a href="#services"   class="block py-2 hover:text-white" onclick="closeMobile()">Services</a></li>
+      <li><a href="#calculator" class="block py-2 hover:text-white" onclick="closeMobile()">Pricing</a></li>
+      <li><a href="#tracker"    class="block py-2 hover:text-white" onclick="closeMobile()">Order Status</a></li>
+      <li><a href="#gallery"    class="block py-2 hover:text-white" onclick="closeMobile()">Gallery</a></li>
+      <li><a href="#contact"    class="block py-2 hover:text-white" onclick="closeMobile()">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     HERO SECTION
+═══════════════════════════════════════════════════════════════ -->
+<section id="hero" class="flex items-center justify-center relative px-4 pt-20">
+  <div class="max-w-5xl mx-auto text-center py-32 md:py-44">
+
+    <div class="hero-badge inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase rounded-full px-4 py-2 mb-6 reveal">
+      <i class="fa-solid fa-star text-xs"></i>
+      Premium Studio & Digital Services — Dhaka
+    </div>
+
+    <h1 class="font-display text-4xl md:text-6xl lg:text-7xl font-900 text-white leading-tight mb-6 reveal" style="transition-delay:0.1s">
+      Your Premium<br>
+      <span style="color:var(--cyan);">Photography</span> &amp;<br>
+      Digital Service Hub
+    </h1>
+
+    <p class="text-gray-300 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed reveal" style="transition-delay:0.2s">
+      Professional photography, expert CV &amp; job applications, and complete online solutions — all under one trusted roof.
+    </p>
+
+    <div class="flex flex-col sm:flex-row gap-4 justify-center reveal" style="transition-delay:0.3s">
+      <a href="#services" class="btn-primary inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full text-sm font-semibold">
+        <i class="fa-solid fa-compass"></i> Explore Services
+      </a>
+      <a href="#calculator" class="btn-outline inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full text-sm font-semibold">
+        <i class="fa-solid fa-calculator"></i> Get a Quote
+      </a>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid grid-cols-3 gap-4 max-w-lg mx-auto mt-16 reveal" style="transition-delay:0.4s">
+      <div class="stat-card rounded-2xl p-4 text-center">
+        <div class="font-display text-2xl font-700 text-white">5K+</div>
+        <div class="text-xs text-gray-400 mt-1">Happy Clients</div>
+      </div>
+      <div class="stat-card rounded-2xl p-4 text-center">
+        <div class="font-display text-2xl font-700 text-white">15+</div>
+        <div class="text-xs text-gray-400 mt-1">Services</div>
+      </div>
+      <div class="stat-card rounded-2xl p-4 text-center">
+        <div class="font-display text-2xl font-700 text-white">8 Yrs</div>
+        <div class="text-xs text-gray-400 mt-1">Experience</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- scroll indicator -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-gray-400 text-xs">
+    <span class="tracking-widest uppercase text-xs">Scroll</span>
+    <i class="fa-solid fa-chevron-down animate-bounce"></i>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     WORKING HOURS BAR
+═══════════════════════════════════════════════════════════════ -->
+<div class="bg-light py-4 px-4 border-b border-gray-200">
+  <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+    <div class="flex items-center gap-3">
+      <i class="fa-regular fa-clock" style="color:var(--slate)"></i>
+      <span class="text-sm font-medium text-gray-600">Working Hours: <strong class="text-navy">9:00 AM – 10:00 PM</strong>, Every Day</span>
+    </div>
+    <div id="hours-badge" class="hours-open flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-full">
+      <span class="w-2 h-2 rounded-full bg-current animate-pulse inline-block"></span>
+      <span id="hours-text">Checking...</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SERVICES SECTION
+═══════════════════════════════════════════════════════════════ -->
+<section id="services" class="py-24 px-4" style="background: var(--light);">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <div class="section-badge">What We Do</div>
+      <h2 class="font-display text-3xl md:text-5xl font-700 text-navy underline-gold">
+        Our Services
+      </h2>
+      <p class="text-muted mt-6 max-w-xl mx-auto text-base">Everything you need — from a perfect passport photo to a polished CV — handled by professionals with care and precision.</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8">
+
+      <!-- Card 1: Studio & Photography -->
+      <div class="service-category-card p-8 reveal">
+        <div class="service-icon-ring" style="background: rgba(0,200,224,0.1);">
+          <i class="fa-solid fa-camera" style="color:var(--cyan)"></i>
+        </div>
+        <h3 class="font-display text-xl font-700 text-navy mb-2">Studio &amp; Photography</h3>
+        <p class="text-muted text-sm mb-6">Professional shots crafted with care, from passport stills to full event coverage.</p>
+        <div class="flex flex-col gap-0">
+          <div class="service-item"><i class="fa-solid fa-id-card"></i> Passport &amp; Visa Size Photos</div>
+          <div class="service-item"><i class="fa-solid fa-user"></i> Portrait Photography</div>
+          <div class="service-item"><i class="fa-solid fa-calendar-check"></i> Event Photography</div>
+          <div class="service-item"><i class="fa-solid fa-wand-magic-sparkles"></i> Photo Editing &amp; Retouching</div>
+          <div class="service-item"><i class="fa-solid fa-image"></i> Photo Framing &amp; Printing</div>
+          <div class="service-item"><i class="fa-solid fa-palette"></i> Color Correction &amp; Lab</div>
+        </div>
+        <div class="mt-6 pt-4 border-t border-gray-100">
+          <span class="text-xs font-semibold uppercase tracking-wider" style="color:var(--cyan)">Starting from 30 TK</span>
+        </div>
+      </div>
+
+      <!-- Card 2: CV & Job -->
+      <div class="service-category-card p-8 reveal" style="transition-delay:0.1s">
+        <div class="service-icon-ring" style="background: rgba(240,180,41,0.1);">
+          <i class="fa-solid fa-file-lines" style="color:var(--gold)"></i>
+        </div>
+        <h3 class="font-display text-xl font-700 text-navy mb-2">CV &amp; Job Application</h3>
+        <p class="text-muted text-sm mb-6">Expert support to build your career — clean CVs, fast applications, zero stress.</p>
+        <div class="flex flex-col gap-0">
+          <div class="service-item"><i class="fa-solid fa-file-pen"></i> Professional CV Writing</div>
+          <div class="service-item"><i class="fa-solid fa-paper-plane"></i> Online Job Application</div>
+          <div class="service-item"><i class="fa-solid fa-ticket"></i> Exam Admit Card Download</div>
+          <div class="service-item"><i class="fa-solid fa-print"></i> Result &amp; Documents Printing</div>
+          <div class="service-item"><i class="fa-solid fa-briefcase"></i> Cover Letter Writing</div>
+          <div class="service-item"><i class="fa-solid fa-magnifying-glass"></i> Job Search Assistance</div>
+        </div>
+        <div class="mt-6 pt-4 border-t border-gray-100">
+          <span class="text-xs font-semibold uppercase tracking-wider" style="color:var(--gold)">Starting from 80 TK</span>
+        </div>
+      </div>
+
+      <!-- Card 3: Online & Digital -->
+      <div class="service-category-card p-8 reveal" style="transition-delay:0.2s">
+        <div class="service-icon-ring" style="background: rgba(99,102,241,0.1);">
+          <i class="fa-solid fa-globe" style="color:#6366f1"></i>
+        </div>
+        <h3 class="font-display text-xl font-700 text-navy mb-2">Online &amp; Digital Services</h3>
+        <p class="text-muted text-sm mb-6">All your digital and document needs handled quickly, accurately, and securely.</p>
+        <div class="flex flex-col gap-0">
+          <div class="service-item"><i class="fa-solid fa-passport"></i> Passport / Visa Online Apply</div>
+          <div class="service-item"><i class="fa-solid fa-bolt"></i> Utility Bill Payments</div>
+          <div class="service-item"><i class="fa-solid fa-keyboard"></i> Computer Typing &amp; Compose</div>
+          <div class="service-item"><i class="fa-solid fa-copy"></i> Photocopy &amp; Scanning</div>
+          <div class="service-item"><i class="fa-solid fa-mobile-screen"></i> Mobile Banking Support</div>
+          <div class="service-item"><i class="fa-solid fa-certificate"></i> NID / Birth Certificate</div>
+        </div>
+        <div class="mt-6 pt-4 border-t border-gray-100">
+          <span class="text-xs font-semibold uppercase tracking-wider" style="color:#6366f1">Starting from 20 TK</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     DYNAMIC COST CALCULATOR
+═══════════════════════════════════════════════════════════════ -->
+<section id="calculator" class="py-24 px-4">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-14 reveal">
+      <div class="section-badge">Instant Estimate</div>
+      <h2 class="font-display text-3xl md:text-5xl font-700 text-white underline-gold">
+        Service Calculator
+      </h2>
+      <p class="text-gray-400 mt-6 max-w-xl mx-auto text-base">Select your required services, adjust quantities, and instantly see your total price.</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-10 items-start">
+
+      <!-- Service Checklist -->
+      <div class="reveal">
+        <h3 class="text-white font-semibold text-sm uppercase tracking-wider mb-5">Select Services</h3>
+        <div id="service-list" class="flex flex-col gap-3">
+          <!-- Injected by JS -->
+        </div>
+      </div>
+
+      <!-- Total & Book -->
+      <div class="reveal" style="transition-delay:0.15s">
+        <h3 class="text-white font-semibold text-sm uppercase tracking-wider mb-5">Your Order Summary</h3>
+
+        <div class="total-box p-6 mb-6">
+          <div id="summary-items" class="text-sm text-gray-400 mb-4 min-h-[60px]">
+            <p class="italic">No services selected yet.</p>
+          </div>
+          <div class="flex items-center justify-between pt-4 border-t border-cyan-800">
+            <span class="text-gray-300 font-medium">Estimated Total</span>
+            <div class="text-right">
+              <span id="total-display" class="font-display text-3xl font-700 text-white">0</span>
+              <span class="text-cyan-400 font-semibold ml-1">TK</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-3">
+          <a id="whatsapp-btn" href="#" target="_blank"
+            class="wa-btn flex items-center justify-center gap-3 px-6 py-4 rounded-xl text-sm font-semibold">
+            <i class="fa-brands fa-whatsapp text-xl"></i>
+            Book / Order via WhatsApp
+          </a>
+          <p class="text-gray-500 text-xs text-center">
+            Prices are estimates. Final price confirmed at shop or via WhatsApp.
+          </p>
+        </div>
+
+        <!-- Quick note box -->
+        <div class="mt-6 p-4 rounded-xl" style="background:rgba(240,180,41,0.08); border: 1px solid rgba(240,180,41,0.25);">
+          <div class="flex gap-3 items-start">
+            <i class="fa-solid fa-lightbulb mt-0.5" style="color:var(--gold)"></i>
+            <p class="text-xs text-gray-400 leading-relaxed">
+              Combine multiple services to save time. Our team handles everything efficiently — usually same day!
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     ORDER STATUS TRACKER
+═══════════════════════════════════════════════════════════════ -->
+<section id="tracker" class="py-24 px-4" style="background:var(--light);">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-14 reveal">
+      <div class="section-badge">Track Your Order</div>
+      <h2 class="font-display text-3xl md:text-5xl font-700 text-navy underline-gold">
+        Live Order Status
+      </h2>
+      <p class="text-muted mt-6 max-w-xl mx-auto text-base">Enter your order reference or phone number to check real-time progress on your order.</p>
+    </div>
+
+    <!-- Lookup bar -->
+    <div class="max-w-md mx-auto mb-14 reveal">
+      <div class="flex gap-2">
+        <input id="order-input" type="text" placeholder="e.g. NSL-2024-0081 or your phone"
+          class="flex-1 bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-100 text-navy placeholder-gray-400 shadow-sm" />
+        <button onclick="lookupOrder()"
+          class="btn-primary px-5 py-3 rounded-xl text-sm font-semibold whitespace-nowrap">
+          <i class="fa-solid fa-search mr-1.5"></i> Track
+        </button>
+      </div>
+    </div>
+
+    <!-- Demo tracker card -->
+    <div id="tracker-card" class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 reveal" style="transition-delay:0.1s">
+      <div class="flex items-center justify-between mb-8 flex-wrap gap-3">
+        <div>
+          <p class="text-xs text-muted uppercase tracking-wider">Order Reference</p>
+          <p id="order-ref" class="font-display text-lg font-700 text-navy mt-1">NSL-2024-0042 (Demo)</p>
+        </div>
+        <div class="text-right">
+          <p class="text-xs text-muted uppercase tracking-wider">Service</p>
+          <p class="text-sm font-medium text-navy mt-1" id="order-service">Passport Photo + CV Writing</p>
+        </div>
+        <div class="text-right">
+          <p class="text-xs text-muted uppercase tracking-wider">Est. Ready</p>
+          <p class="text-sm font-medium text-navy mt-1" id="order-ready">Today, 4:00 PM</p>
+        </div>
+      </div>
+
+      <!-- Step tracker -->
+      <div class="flex items-start justify-between overflow-x-auto pb-2 gap-2" id="steps-container">
+        <!-- Injected by JS -->
+      </div>
+
+      <div id="status-message" class="mt-8 p-4 rounded-xl text-sm" style="background:rgba(0,200,224,0.08); border:1px solid rgba(0,200,224,0.25); color: #0a4f5e;">
+        <i class="fa-solid fa-circle-info mr-2"></i>
+        <strong>In Progress:</strong> Your photos are being edited and your CV is being composed. We'll notify you when ready!
+      </div>
+    </div>
+
+    <!-- Demo selector -->
+    <div class="flex flex-wrap gap-3 justify-center mt-8 reveal">
+      <p class="text-muted text-sm w-full text-center mb-1">Try a demo status:</p>
+      <button onclick="setDemo(0)" class="text-xs px-4 py-2 rounded-full border border-gray-200 bg-white hover:border-cyan-400 text-navy transition-all">📩 Just Received</button>
+      <button onclick="setDemo(1)" class="text-xs px-4 py-2 rounded-full border border-gray-200 bg-white hover:border-cyan-400 text-navy transition-all">⚙️ In Progress</button>
+      <button onclick="setDemo(2)" class="text-xs px-4 py-2 rounded-full border border-gray-200 bg-white hover:border-cyan-400 text-navy transition-all">✅ Ready for Pickup</button>
+      <button onclick="setDemo(3)" class="text-xs px-4 py-2 rounded-full border border-gray-200 bg-white hover:border-cyan-400 text-navy transition-all">🎉 Completed</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PHOTO GALLERY
+═══════════════════════════════════════════════════════════════ -->
+<section id="gallery" class="py-24 px-4 bg-white">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-14 reveal">
+      <div class="section-badge">Our Work</div>
+      <h2 class="font-display text-3xl md:text-5xl font-700 text-navy underline-gold">
+        Portfolio &amp; Gallery
+      </h2>
+      <p class="text-muted mt-6 max-w-xl mx-auto text-base">A glimpse of our studio work — portraits, color correction, and professional document designs.</p>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[200px]">
+      <!-- Large item -->
+      <div class="gallery-item col-span-2 row-span-2 reveal">
+        <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80" alt="Portrait photography" loading="lazy" />
+        <div class="gallery-overlay">
+          <span class="text-white text-xs font-semibold bg-black/40 px-3 py-1 rounded-full">Portrait Photography</span>
+        </div>
+      </div>
+      <div class="gallery-item reveal" style="transition-delay:0.05s">
+        <img src="https://images.unsplash.com/photo-1607748862156-7c548e7e98f4?w=600&q=80" alt="Passport photo" loading="lazy"/>
+        <div class="gallery-overlay">
+          <span class="text-white text-xs font-semibold bg-black/40 px-3 py-1 rounded-full">Passport Photos</span>
+        </div>
+      </div>
+      <div class="gallery-item reveal" style="transition-delay:0.1s">
+        <img src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=600&q=80" alt="CV design" loading="lazy"/>
+        <div class="gallery-overlay">
+          <span class="text-white text-xs font-semibold bg-black/40 px-3 py-1 rounded-full">CV Design</span>
+        </div>
+      </div>
+      <div class="gallery-item reveal" style="transition-delay:0.15s">
+        <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=600&q=80" alt="Color lab" loading="lazy"/>
+        <div class="gallery-overlay">
+          <span class="text-white text-xs font-semibold bg-black/40 px-3 py-1 rounded-full">Color Lab</span>
+        </div>
+      </div>
+      <div class="gallery-item reveal" style="transition-delay:0.2s">
+        <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&q=80" alt="Event photography" loading="lazy"/>
+        <div class="gallery-overlay">
+          <span class="text-white text-xs font-semibold bg-black/40 px-3 py-1 rounded-full">Event Photography</span>
+        </div>
+      </div>
+      <div class="gallery-item col-span-2 reveal" style="transition-delay:0.25s">
+        <img src="https://images.unsplash.com/photo-1554048612-b6a482bc67e5?w=900&q=80" alt="Photo editing" loading="lazy"/>
+        <div class="gallery-overlay">
+          <span class="text-white text-xs font-semibold bg-black/40 px-3 py-1 rounded-full">Photo Editing &amp; Retouching</span>
+        </div>
+      </div>
+      <div class="gallery-item reveal" style="transition-delay:0.3s">
+        <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=600&q=80" alt="Document services" loading="lazy"/>
+        <div class="gallery-overlay">
+          <span class="text-white text-xs font-semibold bg-black/40 px-3 py-1 rounded-full">Document Services</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-10 reveal">
+      <a href="#contact"
+        class="inline-flex items-center gap-2 text-sm font-semibold px-6 py-3 rounded-full border-2 transition-all hover:bg-navy hover:text-white"
+        style="border-color:var(--navy); color:var(--navy);">
+        <i class="fa-solid fa-images"></i> Request Custom Work
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CONTACT & FOOTER
+═══════════════════════════════════════════════════════════════ -->
+<section id="contact" class="py-24 px-4" style="background:var(--light);">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-14 reveal">
+      <div class="section-badge">Get in Touch</div>
+      <h2 class="font-display text-3xl md:text-5xl font-700 text-navy underline-gold">
+        Visit or Contact Us
+      </h2>
+      <p class="text-muted mt-6 max-w-xl mx-auto text-base">Stop by the shop or reach out — we're always happy to help with your photography and digital needs.</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6 mb-10">
+
+      <div class="contact-card p-6 text-center reveal">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4" style="background:rgba(0,200,224,0.1);">
+          <i class="fa-solid fa-phone text-lg" style="color:var(--cyan)"></i>
+        </div>
+        <h4 class="font-semibold text-navy text-sm mb-1">Phone / WhatsApp</h4>
+        <a href="tel:+8801XXXXXXXXX" class="text-muted text-sm hover:text-cyan-500 transition-colors">+880 1XXX-XXXXXX</a>
+      </div>
+
+      <div class="contact-card p-6 text-center reveal" style="transition-delay:0.1s">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4" style="background:rgba(0,200,224,0.1);">
+          <i class="fa-solid fa-envelope text-lg" style="color:var(--cyan)"></i>
+        </div>
+        <h4 class="font-semibold text-navy text-sm mb-1">Email</h4>
+        <a href="mailto:naharstudio@email.com" class="text-muted text-sm hover:text-cyan-500 transition-colors">naharstudio@email.com</a>
+      </div>
+
+      <div class="contact-card p-6 text-center reveal" style="transition-delay:0.2s">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4" style="background:rgba(0,200,224,0.1);">
+          <i class="fa-solid fa-location-dot text-lg" style="color:var(--cyan)"></i>
+        </div>
+        <h4 class="font-semibold text-navy text-sm mb-1">Shop Address</h4>
+        <p class="text-muted text-sm">Shop No. XX, [Area Name],<br>Dhaka, Bangladesh</p>
+      </div>
+
+    </div>
+
+    <!-- Map Placeholder -->
+    <div class="map-placeholder reveal">
+      <div class="map-pin-anim">
+        <i class="fa-solid fa-location-dot text-4xl" style="color:var(--slate)"></i>
+      </div>
+      <p class="font-semibold text-gray-500">Nahar Studio &amp; Color Lab</p>
+      <p class="text-sm text-gray-400">[Area Name], Dhaka, Bangladesh</p>
+      <a href="https://maps.google.com" target="_blank"
+        class="mt-2 text-xs font-semibold px-4 py-2 rounded-full border border-gray-300 hover:bg-white text-gray-600 transition-all">
+        <i class="fa-brands fa-google mr-1.5"></i>Open in Google Maps
+      </a>
+      <!-- Visual map grid -->
+      <div class="absolute inset-0 opacity-5 pointer-events-none"
+        style="background-image: repeating-linear-gradient(0deg,#0f1c3f 0px,#0f1c3f 1px,transparent 1px,transparent 40px), repeating-linear-gradient(90deg,#0f1c3f 0px,#0f1c3f 1px,transparent 1px,transparent 40px);">
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════════════════════ -->
+<footer class="pt-16 pb-8 px-4">
+  <div class="max-w-6xl mx-auto">
+    <div class="grid md:grid-cols-3 gap-10 mb-12">
+
+      <!-- Brand -->
+      <div>
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg,var(--cyan),#0095a8);">
+            <i class="fa-solid fa-camera text-white text-sm"></i>
+          </div>
+          <div>
+            <div class="font-display font-700 text-white text-lg leading-tight">Nahar Studio</div>
+            <div class="text-xs text-gray-500 tracking-widest">&amp; COLOR LAB</div>
+          </div>
+        </div>
+        <p class="text-gray-500 text-sm leading-relaxed max-w-xs">
+          Your trusted local partner for professional photography, digital services, and document work — since 2016.
+        </p>
+        <div class="flex gap-3 mt-6">
+          <a href="#" class="social-icon"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" class="social-icon"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="#" class="social-icon"><i class="fa-brands fa-instagram"></i></a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div>
+        <h4 class="text-white font-semibold text-sm uppercase tracking-wider mb-5">Quick Links</h4>
+        <ul class="flex flex-col gap-3 text-sm">
+          <li><a href="#services"   class="text-gray-500 hover:text-cyan-400 transition-colors">Services</a></li>
+          <li><a href="#calculator" class="text-gray-500 hover:text-cyan-400 transition-colors">Price Calculator</a></li>
+          <li><a href="#tracker"    class="text-gray-500 hover:text-cyan-400 transition-colors">Order Tracker</a></li>
+          <li><a href="#gallery"    class="text-gray-500 hover:text-cyan-400 transition-colors">Portfolio</a></li>
+          <li><a href="#contact"    class="text-gray-500 hover:text-cyan-400 transition-colors">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Services List -->
+      <div>
+        <h4 class="text-white font-semibold text-sm uppercase tracking-wider mb-5">Top Services</h4>
+        <ul class="flex flex-col gap-3 text-sm">
+          <li class="flex items-center gap-2 text-gray-500"><i class="fa-solid fa-circle text-cyan-400 text-xs"></i>Passport Size Photos</li>
+          <li class="flex items-center gap-2 text-gray-500"><i class="fa-solid fa-circle text-cyan-400 text-xs"></i>CV Writing</li>
+          <li class="flex items-center gap-2 text-gray-500"><i class="fa-solid fa-circle text-cyan-400 text-xs"></i>Online Job Application</li>
+          <li class="flex items-center gap-2 text-gray-500"><i class="fa-solid fa-circle text-cyan-400 text-xs"></i>Passport Online Apply</li>
+          <li class="flex items-center gap-2 text-gray-500"><i class="fa-solid fa-circle text-cyan-400 text-xs"></i>Color Printing &amp; Scan</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+      <p class="text-gray-600 text-xs">© 2024 Nahar Studio &amp; Color Lab. All rights reserved.</p>
+      <p class="text-gray-600 text-xs">Designed with <i class="fa-solid fa-heart text-red-500"></i> in Dhaka, Bangladesh</p>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════════════════════════ -->
+<script>
+/* ─── Navbar scroll effect ────────────────────────────────── */
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 50);
+});
+
+/* ─── Mobile menu ─────────────────────────────────────────── */
+const menuToggle  = document.getElementById('menu-toggle');
+const mobileMenu  = document.getElementById('mobile-menu');
+const menuIcon    = document.getElementById('menu-icon');
+menuToggle.addEventListener('click', () => {
+  const open = mobileMenu.classList.toggle('open');
+  menuIcon.className = open ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+});
+function closeMobile() {
+  mobileMenu.classList.remove('open');
+  menuIcon.className = 'fa-solid fa-bars';
+}
+
+/* ─── Working hours status ─────────────────────────────────── */
+function checkHours() {
+  const now  = new Date();
+  const h    = now.getHours();
+  const m    = now.getMinutes();
+  const mins = h * 60 + m;
+  const open  = 9  * 60;   // 9:00 AM
+  const close = 22 * 60;   // 10:00 PM
+  const isOpen = mins >= open && mins < close;
+
+  ['hours-badge', 'nav-status'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.className = id === 'hours-badge'
+      ? (isOpen ? 'hours-open flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-full' : 'hours-closed flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-full')
+      : (isOpen ? 'hidden md:flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full hours-open' : 'hidden md:flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full hours-closed');
+  });
+
+  const statusText = isOpen ? '✓ Open Now' : '✕ Closed Now';
+  document.getElementById('hours-text').textContent = statusText;
+  const ns = document.getElementById('nav-status-text');
+  if (ns) ns.textContent = isOpen ? 'Open Now' : 'Closed';
+}
+checkHours();
+setInterval(checkHours, 60000);
+
+/* ─── Cost Calculator ─────────────────────────────────────── */
+const SERVICES = [
+  { id: 's1',  label: 'Passport Photo (1 copy)',  price: 30,  icon: 'fa-id-card',       category: 'Studio' },
+  { id: 's2',  label: 'Portrait Session',         price: 200, icon: 'fa-user',           category: 'Studio' },
+  { id: 's3',  label: 'Photo Editing',            price: 50,  icon: 'fa-wand-magic-sparkles', category: 'Studio' },
+  { id: 's4',  label: 'Photo Framing (A4)',       price: 120, icon: 'fa-image',          category: 'Studio' },
+  { id: 's5',  label: 'CV Writing (Professional)',price: 150, icon: 'fa-file-pen',       category: 'CV' },
+  { id: 's6',  label: 'Online Job Application',   price: 80,  icon: 'fa-paper-plane',   category: 'CV' },
+  { id: 's7',  label: 'Exam Admit Card Download', price: 40,  icon: 'fa-ticket',         category: 'CV' },
+  { id: 's8',  label: 'Passport Online Apply',    price: 200, icon: 'fa-passport',       category: 'Digital' },
+  { id: 's9',  label: 'Utility Bill Payment',     price: 20,  icon: 'fa-bolt',           category: 'Digital' },
+  { id: 's10', label: 'Typing / Compose (1 page)',price: 30,  icon: 'fa-keyboard',       category: 'Digital' },
+  { id: 's11', label: 'Photocopy (per page)',     price: 3,   icon: 'fa-copy',           category: 'Digital' },
+  { id: 's12', label: 'Scanning (per page)',      price: 10,  icon: 'fa-file-image',     category: 'Digital' },
+];
+
+const quantities = {};
+SERVICES.forEach(s => quantities[s.id] = 1);
+
+function buildCalculator() {
+  const list = document.getElementById('service-list');
+  list.innerHTML = '';
+  SERVICES.forEach(s => {
+    const div = document.createElement('div');
+    div.className = 'calc-item';
+    div.id = 'item-' + s.id;
+    div.innerHTML = `
+      <div class="flex items-center gap-3 flex-1">
+        <input type="checkbox" id="chk-${s.id}" data-id="${s.id}" onchange="updateCalc()" />
+        <label for="chk-${s.id}" class="flex items-center gap-2 cursor-pointer flex-1">
+          <i class="fa-solid ${s.icon} text-cyan-400 w-4"></i>
+          <span class="text-white text-sm">${s.label}</span>
+        </label>
+      </div>
+      <div class="flex items-center gap-2 ml-3 shrink-0">
+        <button class="qty-btn" onclick="changeQty('${s.id}',-1)">−</button>
+        <span id="qty-${s.id}" class="text-white text-sm w-5 text-center">1</span>
+        <button class="qty-btn" onclick="changeQty('${s.id}',1)">+</button>
+        <span class="text-gray-400 text-xs ml-2 w-14 text-right">${s.price} TK</span>
+      </div>
+    `;
+    div.querySelector('input').addEventListener('change', () => {
+      div.classList.toggle('selected', div.querySelector('input').checked);
+    });
+    list.appendChild(div);
+  });
+}
+
+function changeQty(id, delta) {
+  quantities[id] = Math.max(1, (quantities[id] || 1) + delta);
+  document.getElementById('qty-' + id).textContent = quantities[id];
+  updateCalc();
+}
+
+function updateCalc() {
+  let total = 0;
+  const lines = [];
+  SERVICES.forEach(s => {
+    const chk = document.getElementById('chk-' + s.id);
+    if (chk && chk.checked) {
+      const qty = quantities[s.id] || 1;
+      const sub = s.price * qty;
+      total += sub;
+      lines.push(`<div class="flex justify-between py-1"><span>${s.label}${qty>1?' × '+qty:''}</span><span class="text-white font-medium">${sub} TK</span></div>`);
+    }
+  });
+  document.getElementById('total-display').textContent = total;
+  document.getElementById('summary-items').innerHTML = lines.length
+    ? lines.join('')
+    : '<p class="italic text-gray-500">No services selected yet.</p>';
+
+  // Build WhatsApp message
+  const phone = '+8801XXXXXXXXX';
+  const msg = lines.length
+    ? encodeURIComponent('Hello Nahar Studio! 👋\nI want to order:\n' + SERVICES.filter(s => document.getElementById('chk-'+s.id)?.checked).map(s => `• ${s.label} x${quantities[s.id]}`).join('\n') + `\nEstimated Total: ${total} TK\nPlease confirm. 🙏`)
+    : encodeURIComponent('Hello Nahar Studio! I would like to know more about your services.');
+  document.getElementById('whatsapp-btn').href = `https://wa.me/${phone}?text=${msg}`;
+}
+
+buildCalculator();
+
+/* ─── Order Status Tracker ─────────────────────────────────── */
+const STEPS = [
+  { label: 'Order Received',   icon: 'fa-inbox',          msg: 'We have received your order. Our team will begin shortly.' },
+  { label: 'In Progress',      icon: 'fa-gears',           msg: 'Your order is actively being worked on. Almost there!' },
+  { label: 'Quality Check',    icon: 'fa-magnifying-glass-check', msg: 'Final quality check in progress to ensure perfection.' },
+  { label: 'Ready for Pickup', icon: 'fa-box-open',        msg: 'Your order is ready! Please visit the shop at your convenience.' },
+  { label: 'Completed',        icon: 'fa-circle-check',   msg: 'Order completed. Thank you for choosing Nahar Studio! ⭐' },
+];
+
+const STATUS_MSGS = [
+  '📩 <strong>Order Received:</strong> Your order is confirmed and queued. Expected start: within the hour.',
+  '⚙️ <strong>In Progress:</strong> Your photos are being edited and your CV is being composed.',
+  '🔍 <strong>Quality Check:</strong> Our team is doing a final quality check.',
+  '📦 <strong>Ready for Pickup:</strong> Your order is ready! Please come collect it.',
+  '🎉 <strong>Completed:</strong> Order handed over. Thank you for your trust!',
+];
+
+let currentDemo = 1;
+
+function renderTracker(activeStep) {
+  const container = document.getElementById('steps-container');
+  container.innerHTML = '';
+  STEPS.forEach((step, i) => {
+    const div = document.createElement('div');
+    div.className = 'tracker-step' + (i < activeStep ? ' done' : '') + (i === activeStep ? ' active' : '');
+    div.innerHTML = `
+      <div class="step-icon"><i class="fa-solid ${step.icon} text-sm"></i></div>
+      <p class="text-xs font-medium mt-2 text-center" style="color: ${i <= activeStep ? 'var(--navy)' : '#9aa5be'}">${step.label}</p>
+    `;
+    container.appendChild(div);
+  });
+  document.getElementById('status-message').innerHTML =
+    `<i class="fa-solid fa-circle-info mr-2"></i>${STATUS_MSGS[activeStep]}`;
+}
+
+function setDemo(step) {
+  currentDemo = step;
+  renderTracker(step);
+}
+
+function lookupOrder() {
+  const val = document.getElementById('order-input').value.trim();
+  if (!val) return;
+  // Simulate lookup: random status based on last char
+  const step = Math.abs(val.charCodeAt(val.length - 1) % 5);
+  renderTracker(step);
+  document.getElementById('order-ref').textContent = val.toUpperCase() + ' (Simulated)';
+}
+
+renderTracker(currentDemo);
+
+/* ─── Scroll reveal ────────────────────────────────────────── */
+const revealEls = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+revealEls.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
